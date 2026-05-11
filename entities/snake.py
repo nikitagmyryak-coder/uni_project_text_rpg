@@ -1,5 +1,7 @@
 from entities.entities import Entity
 
 class Snake(Entity):
-    def __init__(self, name, level, hp, damage):
-        super().__init__("Snake","animal", level, hp, damage)
+    def __init__(self, level):
+        hp = level * 15
+        damage = level * 8
+        super().__init__("Snake", "snake", level, hp, damage)
