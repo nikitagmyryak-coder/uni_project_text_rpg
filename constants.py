@@ -22,7 +22,7 @@ ENEMY_DESCRIPTIONS = {
         "A lumbering beast with thick, leathery skin.",
         "A massive wall of muscle and bad attitude.",
         "A hulking monster wearing scrap-metal armor.",
-        "A mountain-sized titan that shakes the earth."
+        "A huge thing that shakes the earth."
     ),
     "snake": (
         "A tiny garden serpent with a weak hiss.",
@@ -35,7 +35,7 @@ ENEMY_DESCRIPTIONS = {
         "A scrawny pup driven by hunger.",
         "A lone hunter patrolling its territory.",
         "A sleek predator with razor-sharp teeth.",
-        "An alpha male, scarred and battle-tested.",
+        "An old dog, scarred and battle-tested.",
         "A monstrous dire-wolf with eyes of cold fire."
     ),
     "skeleton": (
@@ -49,8 +49,8 @@ ENEMY_DESCRIPTIONS = {
         "A slow, rotting corpse stumbling aimlessly.",
         "A fresh cadaver with surprising grip strength.",
         "A bloated horror that refuses to go down.",
-        "A decaying soldier clumsily gripping a rusted pistol.",
-        "A relentless 'Shambler' mindlessly firing a submachine gun."
+        "A decaying soldier clumsily gripping a rusted gun.",
+        "A relentless 'Shambler' still firing his rifle."
     ),
     "cultist": (
         "A wide-eyed initiate chanting nervously.",
