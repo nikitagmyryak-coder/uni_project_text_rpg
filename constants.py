@@ -1,4 +1,7 @@
-OGR_NAMES = ("Ozar", "Ozag", "Burag", "Druzur", "Xuzor", "Vegigark", "Blaukig", "Blanikork", "Kusazug", "Yuwukork")
+OGR_NAMES = ("Ozar", "Ozag", "Burag", "Druzur", "Xuzor", "Vegigark", "Blaukig", "Blanikork", "Kusazug", "Yuwukork",
+             "Mogur", "Grakug", "Zurog", "Brakar", "Vogthak", "Drazg", "Krolug", "Thrazag", "Gromm", "Urkeg", "Ruzok",
+             "Balthog", "Glurg", "Mazzug", "Trogak", "Vargak", "Drogul", "Zark", "Kruglak", "Grotth", "Buzak", "Hogar",
+             "Thok", "Razgug", "Mungog", "Gruk", "Zog", "Dreg", "Brogh", "Kraz")
 
 HUMAN_NAMES = ("Brick", "Rick", "Ivan", "Dmitriy", "John", "Joe", "Skinny", "Tall", "Doc", "Hammer", "Jacket", "Steve",
                "Bill", "Bone", "Jack", "Viktor", "Stan", "Mick", "Frank", "Anton", "Shorty", "Slim", "Tiny", "Biggs",
