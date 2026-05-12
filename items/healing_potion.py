@@ -1,7 +1,7 @@
 from items.items import Item
 
 # potion will have 2 or 3 levels, weak/cheap and good/strong potions
-class Potion(Item):
+class HealingPotion(Item):
     def __init__(self, level):
         self.level = level
         if level == 1:
