@@ -1,5 +1,5 @@
 from entities.entities import Entity
-from exceptions.exceptions import *
+from exceptions_and_functions.exceptions import *
 import random
 import re
 
@@ -30,15 +30,3 @@ class Player(Entity):
     #         self._level = value
     #         print(f"Level Up! Now you are level {value}")
 
-# todo:
-# [] health_restore()
-# [] heal()
-# [] equip()
-# [] inspect()
-# [] gold/money
-# [] drop_item()
-# [] capacity based on level
-# [] base_damage vs total_damage
-# [] take_damage
-# [] weapon_damage
-# [] cheat
