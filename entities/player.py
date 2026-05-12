@@ -1,4 +1,5 @@
 from entities.entities import Entity
+from exceptions.exceptions import *
 import random
 import re
 
@@ -7,10 +8,9 @@ class Player(Entity):
     def __init__(self, name, level=1):
         max_hp = 100 + (level * 20)
         base_damage = 15 + (level * 10) # + weapon_damage
-        if re.match("^[A-Za-z]+$", name):
-            self.name = name
-        # else:
-        #     raise InvalidNameException()
+        if not re.match("^[A-Za-z]+$", name):
+             raise InvalidNameException("Invalid name format. Only Latin letter are allowed (no numbers, special characters, etc.)")
+
         #todo: add cheat
 
         # if name == "anon":
