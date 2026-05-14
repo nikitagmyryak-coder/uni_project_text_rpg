@@ -11,22 +11,28 @@ class Entity:
 
         race_key = race.lower()
 
+        # Set random name if none is provided
         if name is None and race_key in ENEMY_NAMES:
             self.name = random.choice(ENEMY_NAMES[race_key])
         else:
             self.name = name
 
+        # Set description based on race and level
         if race_key in ENEMY_DESCRIPTIONS:
-            self.description = ENEMY_DESCRIPTIONS[race_key][level - 1]
+            # Using min to prevent IndexError if level is too high
+            desc_index = min(level - 1, len(ENEMY_DESCRIPTIONS[race_key]) - 1)
+            self.description = ENEMY_DESCRIPTIONS[race_key][desc_index]
         else:
             self.description = ""
 
     def introduce(self):
+        """Print entity information and description."""
         print(f"--- {self.name} ({self.race}) ---")
         print(f"Level: {self._level} | HP: {self._hp} | Damage: {self._damage}")
         if self.description:
             print(f"Description: {self.description}")
 
+    # Getters
     def get_level(self):
         return self._level
 
@@ -37,6 +43,7 @@ class Entity:
         return self._damage
 
     def take_damage(self, damage):
+        """Reduce HP by damage amount, ensuring it doesn't go below 0."""
         if damage < self._hp:
             self._hp -= damage
         else:
