@@ -1,5 +1,7 @@
 from entities.entities import Entity
 from exceptions_and_functions.exceptions import *
+from items.items import Item
+
 import random
 import re
 
@@ -18,15 +20,38 @@ class Player(Entity):
 
         super().__init__(name, "Player", level, max_hp, base_damage)
         self.max_hp = max_hp
+        self.current_hp = self.max_hp
         self.gold = random.randint(25, 101)
         self.inventory = []
         self.equipped_weapon = None
         self.capacity = 8 + (level * 2)
         self.description = "Despite everything, it's still you."
 
-    # todo: redo thi bs
-    # def level_up(self, value):
-    #     if value > self._level:
-    #         self._level = value
-    #         print(f"Level Up! Now you are level {value}")
+    def health_restore(self):
+        self.current_hp = self.max_hp
 
+    def heal(self, amount):
+        self.current_hp += amount
+        if self.current_hp > self.max_hp:
+            self.current_hp = self.max_hp
+
+    def inspect(self, equipped_item):
+        print(equipped_item.description)
+
+
+
+
+
+
+# todo:
+# [x] health_restore()
+# [x] heal()
+# [] equip()
+# [?] inspect()
+# [] gold/money
+# [] drop_item()
+# [] capacity based on level
+# [] base_damage vs total_damage
+# [x] take_damage
+# [] weapon_damage
+# [] cheat
