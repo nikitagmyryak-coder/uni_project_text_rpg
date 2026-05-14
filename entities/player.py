@@ -1,57 +1,65 @@
-from entities.entities import Entity
-from exceptions_and_functions.exceptions import *
-from items.items import Item
-
 import random
 import re
+from entities.entities import Entity
+from exceptions_and_functions.exceptions import *
+from logic.inventory import Inventory
+
 
 class Player(Entity):
-    # we insert level in the beginning of the game so i can add a cheat later to test staff
     def __init__(self, name, level=1):
+        # Calculate stats based on level
         max_hp = 100 + (level * 20)
-        base_damage = 5 + (level * 5) # + weapon_damage
+        base_damage = 5 + (level * 5)
+
+        # Validate name using regex
         if not re.match("^[A-Za-z]+$", name):
-             raise InvalidNameException("Invalid name format. Only Latin letter are allowed (no numbers, special characters, etc.)")
+            raise InvalidNameException("Invalid name format. Only Latin letters are allowed.")
 
+        super().__init__(name, "Player", level, max_hp, base_damage)
 
-        # just a cheat for fun/testing
+        # Identity and status
+        self.max_hp = max_hp
+        self.current_hp = self.max_hp
+        self.gold = random.randint(25, 101)
+        self.description = "Despite everything, it's still you."
+
+        # Combat and items
+        self.capacity = 8 + (level * 2)
+        self.inventory = Inventory(self.capacity)
+        self.equipped_weapon = None
+
+        # Testing cheat
         if name.lower() == "anon":
             self.max_hp = 9999
             self.current_hp = 9999
             self._damage = 999
 
-        super().__init__(name, "Player", level, max_hp, base_damage)
-        self.max_hp = max_hp
-        self.current_hp = self.max_hp
-        self.gold = random.randint(25, 101)
-        self.inventory = []
-        self.equipped_weapon = None
-        self.capacity = 8 + (level * 2)
-        self.description = "Despite everything, it's still you."
-
     def health_restore(self):
+        """Restore health to maximum."""
         self.current_hp = self.max_hp
 
     def heal(self, amount):
+        """Heal the player by a certain amount, not exceeding max HP."""
         self.current_hp += amount
         if self.current_hp > self.max_hp:
             self.current_hp = self.max_hp
 
     def inspect(self, item):
+        """Print detailed information about an item."""
         level_info = f" [Lvl: {item.level}]" if hasattr(item, 'level') else ""
 
         print(f"--- {item.name}{level_info} ---")
         print(f"Description: {item.description}")
 
-        # Дополнительно: показываем статы, если это оружие или зелье
-        if item.damage > 0:
+        if getattr(item, 'damage', 0) > 0:
             print(f"Damage: {item.damage}")
-        if item.heal > 0:
+        if getattr(item, 'heal', 0) > 0:
             print(f"Heal: {item.heal}")
 
     def take_damage(self, damage):
+        """Handle incoming damage and check for death."""
         super().take_damage(damage)
-        if self.current_hp <= 0:
+        if self._hp <= 0:  # Using self._hp from Entity class
             print("Game Over. You died.")
             # add a function to exit/load save file
 
