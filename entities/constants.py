@@ -38,6 +38,13 @@ ENEMY_DESCRIPTIONS = {
         "An old dog, scarred and battle-tested.",
         "A monstrous dire-wolf with eyes of cold fire."
     ),
+    "bear": (
+        "A young bear guarding its territory.",
+        "A large male with thick fur.",
+        "An enraged grizzly, sensing the landscape.",
+        "A huge beast, its claws can tear through steel.",
+        "A legendary man-eating bear who has become master of the forest."
+    ),
     "skeleton": (
         "A pile of rattling bones barely held together.",
         "An animated corpse clutching a rusted blade.",
