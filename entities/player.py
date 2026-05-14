@@ -9,7 +9,7 @@ class Player(Entity):
     # we insert level in the beginning of the game so i can add a cheat later to test staff
     def __init__(self, name, level=1):
         max_hp = 100 + (level * 20)
-        base_damage = 15 + (level * 10) # + weapon_damage
+        base_damage = 5 + (level * 5) # + weapon_damage
         if not re.match("^[A-Za-z]+$", name):
              raise InvalidNameException("Invalid name format. Only Latin letter are allowed (no numbers, special characters, etc.)")
 
