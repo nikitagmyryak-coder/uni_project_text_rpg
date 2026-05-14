@@ -63,7 +63,23 @@ class Player(Entity):
             print("Game Over. You died.")
             # add a function to exit/load save file
 
+    def get_total_damage(self):
+        """Calculate base damage plus equipped weapon damage."""
+        weapon_bonus = self.equipped_weapon.damage if self.equipped_weapon else 0
+        return self._damage + weapon_bonus
 
+    def drop_item(self, item):
+        """Remove an item from the inventory and unequip if necessary."""
+        if item in self.inventory.items:
+            # If the item is currently equipped, we must unequip it first
+            if item == self.equipped_weapon:
+                self.equipped_weapon = None
+                print(f"You unequipped {item.name} before dropping it.")
+
+            self.inventory.items.remove(item)
+            print(f"You dropped {item.name}.")
+        else:
+            print(f"You don't have {item.name} in your inventory.")
 
 # todo:
 # [x] health_restore()
@@ -71,7 +87,7 @@ class Player(Entity):
 # [] equip()
 # [x] inspect()
 # [x] gold/money
-# [] drop_item()
+# [x] drop_item()
 # [] capacity based on level
 # [] base_damage vs total_damage
 # [x] take_damage
