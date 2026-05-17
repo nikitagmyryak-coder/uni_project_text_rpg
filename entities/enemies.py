@@ -1,5 +1,6 @@
 from entities.entities import Entity
 
+# ==================== undead ====================
 class Ghoul(Entity):
     def __init__(self, level):
         hp = 20 + (level * 10)
@@ -18,6 +19,7 @@ class Zombie(Entity):
         damage = 12 + (level * 6)
         super().__init__(None, "zombie", level, hp, damage)
 
+# ==================== alive ====================
 class Cultist(Entity):
     def __init__(self, level):
         hp = 30 + (level * 10)
@@ -48,6 +50,7 @@ class Ogre(Entity):
         damage = 8 + (level * 6)
         super().__init__(None, "ogre", level, hp, damage)
 
+# ==================== animals ====================
 class Wolf(Entity):
     def __init__(self, level):
         hp = 25 + (level * 12)
