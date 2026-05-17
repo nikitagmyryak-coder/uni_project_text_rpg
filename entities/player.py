@@ -81,10 +81,15 @@ class Player(Entity):
         else:
             print(f"You don't have {item.name} in your inventory.")
 
+    def equip(self, weapon):
+        if getattr(weapon, 'damage', 0) > 0:
+            self.equipped_weapon = weapon
+            print(f"You successfully equipped {weapon.name}!")
+
 # todo:
 # [x] health_restore()
 # [x] heal()
-# [] equip()
+# [x] equip()
 # [x] inspect()
 # [x] gold/money
 # [x] drop_item()
