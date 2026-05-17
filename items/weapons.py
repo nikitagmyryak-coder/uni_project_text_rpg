@@ -50,12 +50,12 @@ class Bayonet(Item):
             damage, desc = 40, "Special Forces tactical blade."
         super().__init__("Bayonet", 0, damage, desc)
 
-class Gunpowder(Item):
+class Gun(Item):
     def __init__(self, level):
         if level == 1:
             damage, desc = 25, "Simple sidearm."
         elif level == 2:
-            damage, desc = 50, "Standart issue."
+            damage, desc = 50, "Standard issue."
         else:
             damage, desc = 80, "Clean and highly modified custom made rifle."
         super().__init__("Gun", 0, damage, desc)
