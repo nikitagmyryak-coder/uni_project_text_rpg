@@ -19,7 +19,6 @@ class Player(Entity):
 
         # Identity and status
         self.max_hp = max_hp
-        self.current_hp = self.max_hp
         self.gold = random.randint(25, 101)
         self.description = "Despite everything, it's still you."
 
@@ -31,18 +30,10 @@ class Player(Entity):
         # Testing cheat
         if name.lower() == "anon":
             self.max_hp = 9999
-            self.current_hp = 9999
+            self._hp = 9999
             self._damage = 999
 
-    def health_restore(self):
-        """Restore health to maximum."""
-        self.current_hp = self.max_hp
 
-    def heal(self, amount):
-        """Heal the player by a certain amount, not exceeding max HP."""
-        self.current_hp += amount
-        if self.current_hp > self.max_hp:
-            self.current_hp = self.max_hp
 
     def inspect(self, item):
         """Print detailed information about an item."""
@@ -56,12 +47,7 @@ class Player(Entity):
         if getattr(item, 'heal', 0) > 0:
             print(f"Heal: {item.heal}")
 
-    def take_damage(self, damage):
-        """Handle incoming damage and check for death."""
-        super().take_damage(damage)
-        if self._hp <= 0:  # Using self._hp from Entity class
-            print("Game Over. You died.")
-            # add a function to exit/load save file
+
 
     def get_total_damage(self):
         """Calculate base damage plus equipped weapon damage."""
@@ -87,14 +73,14 @@ class Player(Entity):
             print(f"You successfully equipped {weapon.name}!")
 
 # todo:
-# [x] health_restore()
-# [x] heal()
+# [] health_restore()
+# [] heal()
 # [x] equip()
 # [x] inspect()
 # [x] gold/money
 # [x] drop_item()
 # [] capacity based on level
 # [] base_damage vs total_damage
-# [x] take_damage
+# [] take_damage
 # [] weapon_damage
 # [x] cheat

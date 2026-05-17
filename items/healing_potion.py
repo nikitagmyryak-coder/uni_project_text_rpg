@@ -1,5 +1,4 @@
 from items.items import Item
-from entities.player import *
 
 # potion will have 2 or 3 levels, weak/cheap and good/strong potions
 class HealingPotion(Item):
