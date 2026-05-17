@@ -36,7 +36,7 @@ class Player(Entity):
 
 
     def inspect(self, item):
-        """Print detailed information about an item."""
+        # Print detailed information about an item
         level_info = f" [Lvl: {item.level}]" if hasattr(item, 'level') else ""
 
         print(f"--- {item.name}{level_info} ---")
@@ -50,12 +50,12 @@ class Player(Entity):
 
 
     def get_total_damage(self):
-        """Calculate base damage plus equipped weapon damage."""
+        # Calculate base damage plus equipped weapon damage
         weapon_bonus = self.equipped_weapon.damage if self.equipped_weapon else 0
         return self._damage + weapon_bonus
 
     def drop_item(self, item):
-        """Remove an item from the inventory and unequip if necessary."""
+        # Remove an item from the inventory and unequip if necessary
         if item in self.inventory.items:
             # If the item is currently equipped, we must unequip it first
             if item == self.equipped_weapon:
@@ -72,6 +72,14 @@ class Player(Entity):
             self.equipped_weapon = weapon
             print(f"You successfully equipped {weapon.name}!")
 
+    # def use_item(self, item):
+    #     if item in self.inventory.items:
+    #         if item.heal > 0:
+    #             self.heal(item.heal)
+    #             self.inventory.items.remove(item)
+    #             print(f"Вы использовали {item.name}.")
+    #     else:
+    #         print(f"You don't have {item.name} in your inventory.")
 # todo:
 # [] health_restore()
 # [] heal()
