@@ -1,4 +1,4 @@
-from entities.entities import Entity
+from entities.base_entity import Entity
 
 # ==================== undead ====================
 class Ghoul(Entity):

@@ -6,8 +6,7 @@ class Inventory():
         self.items = []
 
     def add_item(self, item):
-        if self.capacity < len(self.items):
-            self.items.append(self.items[self.capacity])
-            self.capacity += 1
+        if len(self.items) < self.capacity:
+            self.items.append(item)
         else:
-            raise NotEnoughSpace("Not enough space, the item was dropped")
+            raise NotEnoughSpace("Not enough space, the item was not added. Clean some space")

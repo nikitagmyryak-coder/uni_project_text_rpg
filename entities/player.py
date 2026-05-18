@@ -1,6 +1,6 @@
 import random
 import re
-from entities.entities import Entity
+from entities.base_entity import Entity
 from exceptions_and_functions.exceptions import *
 from logic.inventory import Inventory
 
