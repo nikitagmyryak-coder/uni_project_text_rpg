@@ -10,3 +10,7 @@ class Inventory():
             self.items.append(item)
         else:
             raise NotEnoughSpace("Not enough space, the item was not added. Clean some space")
+
+    def remove_item(self, item):
+        if item in self.items:
+            self.items.remove(item)
