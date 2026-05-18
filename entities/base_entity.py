@@ -26,7 +26,7 @@ class Entity:
             self.description = ""
 
     def introduce(self):
-        """Print entity information and description."""
+        # Print entity information and description.
         print(f"--- {self.name} ({self.race}) ---")
         print(f"Level: {self._level} | HP: {self._hp} | Damage: {self._damage}")
         if self.description:
@@ -43,7 +43,7 @@ class Entity:
         return self._damage
 
     def take_damage(self, damage):
-        """Reduce HP by damage amount, ensuring it doesn't go below 0."""
+        # Reduce HP by damage amount, ensuring it doesn't go below 0.
         if damage < self._hp:
             self._hp -= damage
         else:

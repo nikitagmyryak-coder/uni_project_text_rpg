@@ -6,12 +6,11 @@ class HealingPotion(Item):
         self.level = level
         if level == 1:
             heal = 25
+            price = 10
             description = "Weak potion"
         elif level == 2:
             heal = 50
+            price = 25
             description = "Strong potion"
-        # else:
-        #     self.health_restore()
-        #     heal = 6769 #doesnt matter, will restore entire health bar dependent on player level
-        #     description = "Will heal you entire body"
-        super().__init__(f"Healing Potion [{description}]", heal, 0)
+
+        super().__init__(f"Healing Potion [{description}, Price: {price}]", heal, 0, price)

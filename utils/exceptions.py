@@ -3,3 +3,6 @@ class InvalidNameException(Exception):
 
 class NotEnoughSpace(Exception):
     pass
+
+class NotEnoughMoney(Exception):
+    pass
