@@ -57,12 +57,11 @@ class Player(Entity):
     def drop_item(self, item):
         # Remove an item from the inventory and unequip if necessary
         if item in self.inventory.items:
-            # If the item is currently equipped, we must unequip it first
             if item == self.equipped_weapon:
                 self.equipped_weapon = None
                 print(f"You unequipped {item.name} before dropping it.")
-
-            self.inventory.items.remove(item)
+            # func from inventory.py
+            self.inventory.remove_item(item)
             print(f"You dropped {item.name}.")
         else:
             print(f"You don't have {item.name} in your inventory.")
