@@ -92,3 +92,4 @@ class Player(Entity):
 # [] take_damage
 # [] weapon_damage
 # [x] cheat
+# [] level_up()
