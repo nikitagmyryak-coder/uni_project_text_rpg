@@ -1,7 +1,7 @@
 import random
 import re
 from entities.base_entity import Entity
-from exceptions_and_functions.exceptions import *
+from utils.exceptions import *
 from logic.inventory import Inventory
 
 

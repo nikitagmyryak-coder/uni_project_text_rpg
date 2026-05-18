@@ -1,4 +1,4 @@
-from exceptions_and_functions.exceptions import *
+from utils.exceptions import *
 
 class Inventory():
     def __init__(self, capacity):
