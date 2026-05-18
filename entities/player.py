@@ -72,14 +72,19 @@ class Player(Entity):
             self.equipped_weapon = weapon
             print(f"You successfully equipped {weapon.name}!")
 
-    # def use_item(self, item):
-    #     if item in self.inventory.items:
-    #         if item.heal > 0:
-    #             self.heal(item.heal)
-    #             self.inventory.items.remove(item)
-    #             print(f"Вы использовали {item.name}.")
-    #     else:
-    #         print(f"You don't have {item.name} in your inventory.")
+    def level_up(self):
+        self._level += 1
+        self.capacity = 8 + (self._level * 2) #not really DRY but idc
+        self.inventory.capacity = self.capacity
+
+# def use_item(self, item):
+#     if item in self.inventory.items:
+#         if item.heal > 0:
+#             self.heal(item.heal)
+#             self.inventory.items.remove(item)
+#             print(f"Вы использовали {item.name}.")
+#     else:
+#         print(f"You don't have {item.name} in your inventory.")
 # todo:
 # [] health_restore()
 # [] heal()
@@ -92,4 +97,4 @@ class Player(Entity):
 # [] take_damage
 # [] weapon_damage
 # [x] cheat
-# [] level_up()
+# [x] level_up()
