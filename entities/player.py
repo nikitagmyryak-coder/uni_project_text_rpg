@@ -77,19 +77,20 @@ class Player(Entity):
         self.capacity = 8 + (self._level * 2) #not really DRY but idc
         self.inventory.capacity = self.capacity
 
-# def use_item(self, item):
-#     if item in self.inventory.items:
-#         if item.heal > 0:
-#             self.heal(item.heal)
-#             self.inventory.items.remove(item)
-#             print(f"Вы использовали {item.name}.")
-#     else:
-#         print(f"You don't have {item.name} in your inventory.")
+    def use_item(self, item):
+        if item in self.inventory.items:
+            if item.heal > 0:
+                self.heal(item.heal)
+                self.inventory.items.remove(item)
+                print(f"You have used {item.name}.")
+        else:
+            print(f"You don't have {item.name} in your inventory.")
 # todo:
 # [] health_restore()
 # [] heal()
 # [x] equip()
 # [x] inspect()
+# [x] useItem()
 # [x] gold/money
 # [x] drop_item()
 # [] capacity based on level
