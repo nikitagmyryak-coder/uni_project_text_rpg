@@ -3,6 +3,7 @@ import re
 from entities.base_entity import Entity
 from utils.exceptions import *
 from logic.inventory import Inventory
+from utils.decorators import log_action, stat_change_alert
 
 
 class Player(Entity):
@@ -66,11 +67,14 @@ class Player(Entity):
         else:
             print(f"You don't have {item.name} in your inventory.")
 
+    @log_action
     def equip(self, weapon):
         if getattr(weapon, 'damage', 0) > 0:
             self.equipped_weapon = weapon
             print(f"You successfully equipped {weapon.name}!")
 
+    @log_action
+    @stat_change_alert
     def level_up(self):
         self._level += 1
         self.capacity = 8 + (self._level * 2) #not really DRY but idc
