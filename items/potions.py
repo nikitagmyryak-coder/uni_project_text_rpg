@@ -1,6 +1,5 @@
 from items.items import Item
 
-# potion will have 2 or 3 levels, weak/cheap and good/strong potions
 class HealingPotion(Item):
     def __init__(self, level):
         self.level = level
@@ -12,5 +11,9 @@ class HealingPotion(Item):
             heal = 50
             price = 25
             description = "Strong potion"
+        else:
+            heal = 100
+            price = 60
+            description = "Elixir"
 
-        super().__init__(f"Healing Potion [{description}, Price: {price}]", heal, 0, price)
+        super().__init__(f"Healing Potion ({description})", heal, 0, price, f"Restores {heal} HP.")
