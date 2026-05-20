@@ -16,7 +16,7 @@ def spawn_enemies(stage):
     elif stage == 2:
         pool = [Zombie, Cultist, Mercenary, Bear]
         levels = [3, 4]
-        count = 3
+        count = random.randint(3, 4)
 
     else:
         pool = [ForeignSoldier, Ogre]
