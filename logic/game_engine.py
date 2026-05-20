@@ -20,7 +20,7 @@ def spawn_enemies(stage):
 
     else:
         pool = [ForeignSoldier, Ogre]
-        levels = [5]
+        levels = [4, 5]
         count = random.randint(1, 2)
 
     for _ in range(count):
