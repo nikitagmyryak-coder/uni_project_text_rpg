@@ -16,6 +16,17 @@ class Inventory():
         if item in self.items:
             self.items.remove(item)
 
-    # def the_most_powerfull_weapon(self):
-    #     for item in range(len(self.items)):
-    #
+    def get_inventory_status(self, player=None):
+        gold_info = f"Gold: {player.gold}\n" if player else ""
+        if not self.items:
+            return "Your inventory is empty."
+        print(gold_info)
+        status = f"--- INVENTORY ({len(self.items)}/{self.capacity}) ---\n"
+        for i, item in enumerate(self.items, 1):
+            is_equipped = ""
+            if player and hasattr(player, 'equipped_weapon') and item == player.equipped_weapon:
+                is_equipped = " (Equipped)"
+
+
+            status += f"{i}. {item.name}{is_equipped}\n"
+        return status

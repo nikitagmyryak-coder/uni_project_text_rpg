@@ -3,15 +3,15 @@ import json
 from entities.player import Player
 from entities.merchant import Merchant
 from logic.game_engine import spawn_enemies
+from logic.inventory import *
 from utils.exceptions import *
 from items.weapons import *
 from items.potions import *
 
-#press enter to continue
 petc = "\nPress Enter to continue..."
 
+
 def clear_screen():
-    # Determines the OS and clears the screen for better visual
     if os.name == 'nt':
         os.system('cls')
     else:
@@ -31,24 +31,98 @@ def character_creation():
             print(ine)
 
 
+def check_inventory_menu(player):
+    while True:
+        clear_screen()
+        print(player.inventory.get_inventory_status(player))
+
+        print("--- OPTIONS ---")
+        print("1. Inspect item")
+        print("2. Back")
+
+        choice = input("\nYour choice: ")
+
+        if choice == "1":
+            if not player.inventory.items:
+                print("\nNothing to inspect.")
+                input(petc)
+                continue
+            try:
+                idx = int(input("Enter item number: ")) - 1
+                if 0 <= idx < len(player.inventory.items):
+                    item = player.inventory.items[idx]
+                    clear_screen()
+                    player.inspect(item)
+                    input(petc)
+                else:
+                    print("\nInvalid item number.")
+                    input(petc)
+            except ValueError:
+                print("\nPlease enter a number.")
+                input(petc)
+
+        elif choice == "2":  # Исправлено с "3" на "2"
+            break
+
+
 def game_loop(player, stage):
     while True:
         clear_screen()
-        print(f"\n--- STAGE {stage} ---")
+        print(f"\n=================================")
+        print(f"       --- STAGE {stage} / 5 ---")
+        print(f"=================================")
+
+        # 1. Боевая фаза комнаты
         spawn_enemies(stage)
-        input("\n[TEST] Вы зачистили комнату! Нажмите Enter, чтобы перейти дальше...")
-        # input("\n --- Choices: \n1. Check inventory \n2. Visit merchant \n 3. Next stage")
-        stage += 1
-        if stage > 3:
+        input("\n[TEST] You have cleared the room")
+
+        # Проверка победы на финальном 5 уровне
+        if stage >= 5:
             clear_screen()
-            print(f" --- GAME OVER! ---\n{player.name} has won")
-            exit()
-        input(petc)
+            print("=================================")
+            print(f"     --- VICTORY! GAME OVER ---")
+            print("=================================")
+            print(f"Congratulations! {player.name} has won the game!")
+            input(petc)
+            break
+
+        # 2. Фаза передышки и выбора действий перед следующей стадией
+        next_stage_ready = False
+        while not next_stage_ready:
+            clear_screen()
+            print(f"--- CAMP (Prepared for Stage {stage + 1}) ---")
+            print(f"Player: {player.name} | Gold: {player.gold}")
+            print("\nChoices:")
+            print("1. Next stage")
+            print("2. Check inventory")
+            print("3. Visit merchant")
+            print("4. Save game")
+            print("5. Exit")
+
+            move = input("\nYour choice: ")
+
+            if move == "1":
+                next_stage_ready = True
+            elif move == "2":
+                check_inventory_menu(player)
+            elif move == "3":
+                print("\n[Merchant coming soon...]")
+                input(petc)
+            elif move == "4":
+                save_game(player, stage)
+            elif move == "5":
+                exit()
+            else:
+                print("\n\033[31mInvalid option. Please choose 1-4.\033[0m")
+                input(petc)
+
+        # Переходим на следующий этап
+        stage += 1
+
 
 def load_game():
     clear_screen()
     save_path = "data/save.json"
-
 
     if not os.path.exists(save_path):
         raise InvalidChoice("No save file found! Please start a new game.")
@@ -59,7 +133,7 @@ def load_game():
 
         player = Player(data["name"], level=data["level"])
         player.gold = data["gold"]
-        player._hp = data["hp"]  # Восстанавливаем приватное здоровье напрямую
+        player._hp = data["hp"]
 
         stage = data["stage"]
 
@@ -93,6 +167,7 @@ def save_game(player: Player, stage: int):
     print("\n\033[32m --- Game saved successfully! ---\033[0m")
     input(petc)
 
+
 def main_menu():
     while True:
         clear_screen()
@@ -115,11 +190,8 @@ def main_menu():
 
                 game_loop(player, stage=1)
 
-
             elif choice == "2":
-
                 player, stage = load_game()
-
                 game_loop(player, stage)
 
             elif choice == "3":
@@ -131,9 +203,9 @@ def main_menu():
                 raise InvalidChoice("Please select an option from 1 to 3.")
 
         except InvalidChoice as ice:
-            # Красим сообщение об ошибке выбора в красный цвет
             print(f"\n\033[31m --- Invalid Choice! {ice} ---\033[0m")
             input(petc)
+
 
 if __name__ == "__main__":
     main_menu()
