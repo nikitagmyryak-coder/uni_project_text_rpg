@@ -79,6 +79,19 @@ class Player(Entity):
         self._hp = self.max_hp
         self._damage += 5
 
+
+def auto_save_log(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        player = args[0]
+        with open("data/log.txt", "a", encoding="utf-8") as f:
+            f.write(f"Player {player.name} leveled up! New Level: {player.get_level()} | Max HP: {player.max_hp}\n")
+
+        return result
+
+    return wrapper
+
+
     # todo: do something with this
     # def use_item(self, item):
     #     if item in self.inventory.items:

@@ -20,8 +20,6 @@ def log_action(func):
 
 
 def stat_change_alert(func):
-
-
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         print("--- STATUS UPDATE SUCCESSFUL ---")
