@@ -11,6 +11,11 @@ class Inventory():
         else:
             raise NotEnoughSpace("Not enough space, the item was not added. Clean some space")
 
+
     def remove_item(self, item):
         if item in self.items:
             self.items.remove(item)
+
+    # def the_most_powerfull_weapon(self):
+    #     for item in range(len(self.items)):
+    #
