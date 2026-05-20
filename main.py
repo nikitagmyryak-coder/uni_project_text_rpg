@@ -35,12 +35,40 @@ def game_loop(player, stage):
         print(f"\n--- STAGE {stage} ---")
         spawn_enemies(stage)
         input("\n[TEST] Вы зачистили комнату! Нажмите Enter, чтобы перейти дальше...")
+        # input("\n --- Choices: \n1. Check inventory \n2. Visit merchant \n 3. Next stage")
         stage += 1
         if stage > 3:
             clear_screen()
             print(f" --- GAME OVER! ---\n{player.name} has won")
             exit()
         input("\nPress Enter to continue...")
+
+def load_game():
+    clear_screen()
+    save_path = "data/save.json"
+
+
+    if not os.path.exists(save_path):
+        raise InvalidChoice("No save file found! Please start a new game.")
+
+    try:
+        with open(save_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        player = Player(data["name"], level=data["level"])
+        player.gold = data["gold"]
+        player._hp = data["hp"]  # Восстанавливаем приватное здоровье напрямую
+
+        stage = data["stage"]
+
+        print("\n\033[32m --- Game loaded successfully! ---\033[0m")
+        input("Press Enter to continue...")
+        return player, stage
+
+    except (json.JSONDecodeError, KeyError, Exception):
+        raise InvalidChoice("Save file is corrupted! Please start a new game.")
+
+
 
 
 def main_menu():
@@ -64,9 +92,12 @@ def main_menu():
 
                 game_loop(player, stage=1)
 
+
             elif choice == "2":
-                # Здесь будет вызов player, stage = load_game()
-                pass
+
+                player, stage = load_game()
+
+                game_loop(player, stage)
 
             elif choice == "3":
                 clear_screen()

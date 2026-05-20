@@ -22,3 +22,7 @@ class NotEnoughMoney(GameException):
 class InvalidChoice(GameException):
     def __init__(self, message="Invalid choice. Please choose a valid option."):
         super().__init__(message)
+
+class NoSave(GameException):
+    def __init__(self, message="No save. Start a new game."):
+        super().__init__(message)
