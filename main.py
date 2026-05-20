@@ -81,9 +81,9 @@ def save_game(player: Player, stage: int):
 
     save_data = {
         "name": player.name,
-        "level": player.level,
+        "level": player.get_level(),
         "gold": player.gold,
-        "hp": player._hp,
+        "hp": player.get_hp(),
         "stage": stage
     }
 
