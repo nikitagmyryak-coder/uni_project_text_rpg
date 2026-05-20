@@ -7,6 +7,8 @@ from utils.exceptions import *
 from items.weapons import *
 from items.potions import *
 
+#press enter to continue
+petc = "\nPress Enter to continue..."
 
 def clear_screen():
     # Determines the OS and clears the screen for better visual
@@ -41,7 +43,7 @@ def game_loop(player, stage):
             clear_screen()
             print(f" --- GAME OVER! ---\n{player.name} has won")
             exit()
-        input("\nPress Enter to continue...")
+        input(petc)
 
 def load_game():
     clear_screen()
@@ -62,14 +64,34 @@ def load_game():
         stage = data["stage"]
 
         print("\n\033[32m --- Game loaded successfully! ---\033[0m")
-        input("Press Enter to continue...")
+        input(petc)
         return player, stage
 
     except (json.JSONDecodeError, KeyError, Exception):
         raise InvalidChoice("Save file is corrupted! Please start a new game.")
 
 
+def save_game(player: Player, stage: int):
+    clear_screen()
+    save_dir = "data"
+    save_path = "data/save.json"
 
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+
+    save_data = {
+        "name": player.name,
+        "level": player.level,
+        "gold": player.gold,
+        "hp": player._hp,
+        "stage": stage
+    }
+
+    with open(save_path, "w", encoding="utf-8") as f:
+        json.dump(save_data, f, indent=4, ensure_ascii=False)
+
+    print("\n\033[32m --- Game saved successfully! ---\033[0m")
+    input(petc)
 
 def main_menu():
     while True:
@@ -89,6 +111,7 @@ def main_menu():
                 print("Between each level you will get multiple choices to help you prepare for a new battle.")
                 print("You will be able to buy new gear from a merchant, manage your inventory, and heal.\n")
                 input("Press Enter to start the adventure...")
+                save_game(player, stage=1)
 
                 game_loop(player, stage=1)
 
@@ -110,7 +133,7 @@ def main_menu():
         except InvalidChoice as ice:
             # Красим сообщение об ошибке выбора в красный цвет
             print(f"\n\033[31m --- Invalid Choice! {ice} ---\033[0m")
-            input("Press Enter to continue...")
+            input(petc)
 
 if __name__ == "__main__":
     main_menu()
