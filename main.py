@@ -3,13 +3,13 @@ import json
 from entities.player import Player
 from entities.merchant import Merchant
 from logic.game_engine import spawn_enemies
-from utils.exceptions import InvalidNameException, NotEnoughSpace, NotEnoughMoney
-from items.weapons import Axe, Dagger, Sword, Mace, Bayonet, Gun
-from items.potions import HealingPotion
+from utils.exceptions import *
+from items.weapons import *
+from items.potions import *
 
 
 def clear_screen():
-    # Determines the OS and clears the screen for better visual experience
+    # Determines the OS and clears the screen for better visual
     if os.name == 'nt':
         os.system('cls')
     else:
@@ -36,7 +36,11 @@ def game_loop(player, stage):
         spawn_enemies(stage)
         input("\n[TEST] Вы зачистили комнату! Нажмите Enter, чтобы перейти дальше...")
         stage += 1
-        input("\nPress Enter to continue...")  # Временная пауза, чтобы цикл не улетал
+        if stage > 3:
+            clear_screen()
+            print(f" --- GAME OVER! ---\n{player.name} has won")
+            exit()
+        input("\nPress Enter to continue...")
 
 
 def main_menu():
@@ -48,30 +52,34 @@ def main_menu():
 
         choice = input("1. New game \n2. Load game \n3. Exit\n\nYour choice: ")
 
-        if choice == "1":
-            player = character_creation()
+        try:
+            if choice == "1":
+                player = character_creation()
 
-            clear_screen()
-            print(" --- Rules and introduction ---\n")
-            print("Between each level you will get multiple choices to help you prepare for a new battle.")
-            print("You will be able to buy new gear from a merchant, manage your inventory, and heal.\n")
-            input("Press Enter to start the adventure...")
+                clear_screen()
+                print(" --- Rules and introduction ---\n")
+                print("Between each level you will get multiple choices to help you prepare for a new battle.")
+                print("You will be able to buy new gear from a merchant, manage your inventory, and heal.\n")
+                input("Press Enter to start the adventure...")
 
-            game_loop(player, stage=1)
+                game_loop(player, stage=1)
 
-        elif choice == "2":
-            # Здесь будет вызов player, stage = load_game()
-            pass
+            elif choice == "2":
+                # Здесь будет вызов player, stage = load_game()
+                pass
 
-        elif choice == "3":
-            clear_screen()
-            print(" --- Goodbye! ---")
-            exit()
+            elif choice == "3":
+                clear_screen()
+                print(" --- Goodbye! ---")
+                exit()
 
-        else:
-            print("\nInvalid choice. Please try again.")
+            else:
+                raise InvalidChoice("Please select an option from 1 to 3.")
+
+        except InvalidChoice as ice:
+            # Красим сообщение об ошибке выбора в красный цвет
+            print(f"\n\033[31m --- Invalid Choice! {ice} ---\033[0m")
             input("Press Enter to continue...")
-
 
 if __name__ == "__main__":
     main_menu()
