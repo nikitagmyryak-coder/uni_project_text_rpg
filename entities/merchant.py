@@ -8,7 +8,6 @@ class Merchant:
     def __init__(self, stage):
         self.stage = stage
 
-        # Pool of all items generated for the current stage level
         all_possible_items = [
             Axe(stage), Dagger(stage), Sword(stage),
             Mace(stage), Bayonet(stage), Gun(stage),
@@ -17,11 +16,10 @@ class Merchant:
 
         self.goods = [item for item in all_possible_items if item.level <= stage]
 
-        # Randomize shop stock size
         self.goods = random.sample(self.goods, k=min(4, len(self.goods)))
 
     def show_goods(self):
-        print("\n" + "-" * 20 + " MERCHANT SHOP " + "-" * 20)
+        print("\n--- MERCHANT SHOP ---")
         print(f"Welcome, traveler! Here is what I have for Stage {self.stage}:")
 
         sorted_goods = sorted(self.goods, key=lambda item: item.price)

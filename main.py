@@ -2,6 +2,7 @@ import os
 import json
 from entities.player import Player
 from entities.merchant import Merchant
+from logic import inventory
 from logic.game_engine import spawn_enemies
 from logic.inventory import *
 from utils.exceptions import *
@@ -62,7 +63,7 @@ def check_inventory_menu(player):
                 print("\nPlease enter a number.")
                 input(petc)
 
-        elif choice == "2":  # Исправлено с "3" на "2"
+        elif choice == "2":
             break
 
 
@@ -87,7 +88,6 @@ def game_loop(player, stage):
             input(petc)
             break
 
-        # 2. Фаза передышки и выбора действий перед следующей стадией
         next_stage_ready = False
         while not next_stage_ready:
             clear_screen()
@@ -127,6 +127,7 @@ def load_game():
     if not os.path.exists(save_path):
         raise InvalidChoice("No save file found! Please start a new game.")
 
+
     try:
         with open(save_path, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -134,8 +135,27 @@ def load_game():
         player = Player(data["name"], level=data["level"])
         player.gold = data["gold"]
         player._hp = data["hp"]
-
         stage = data["stage"]
+
+        # clear current unrelevant inventory
+        player.inventory.items = []
+        player.equipped_weapon = None
+
+        eq_name = data.get("equipped_weapon")
+        if eq_name:
+            for item in player.inventory.items:
+                if item.__class__.__name__ == eq_name:
+                    player.equipped_weapon = item
+                    break
+
+        for item_data in data.get("inventory", []):
+            class_name = item_data["type"]
+            item_level = item_data["level"]
+
+            if class_name in globals():
+                item_class = globals()[class_name]
+                new_item = item_class(item_level)
+                player.inventory.add_item(new_item)
 
         print("\n\033[32m --- Game loaded successfully! ---\033[0m")
         input(petc)
@@ -153,12 +173,24 @@ def save_game(player: Player, stage: int):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
+    inventory_data = []
+    for item in player.inventory.items:
+        item_info = {
+            "type": item.__class__.__name__,
+            "level": getattr(item, 'level', 1)
+        }
+        inventory_data.append(item_info)
+
+    equipped_weapon = player.equipped_weapon.__class__.__name__ if player.equipped_weapon else None
+
     save_data = {
         "name": player.name,
         "level": player.get_level(),
         "gold": player.gold,
         "hp": player.get_hp(),
-        "stage": stage
+        "stage": stage,
+        "equipped_weapon": equipped_weapon,
+        "inventory": inventory_data
     }
 
     with open(save_path, "w", encoding="utf-8") as f:
@@ -169,7 +201,6 @@ def save_game(player: Player, stage: int):
 
 
 def visit_merchant_menu(player, stage):
-    # Создаем объект торговца для текущего этапа (каждый раз товары будут генерироваться случайно)
     merchant = Merchant(stage)
 
     while True:

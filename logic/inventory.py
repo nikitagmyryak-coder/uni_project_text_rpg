@@ -12,6 +12,9 @@ class Inventory():
             raise NotEnoughSpace("Not enough space, the item was not added. Clean some space")
 
 
+    def clear_items(self):
+        self.items = []
+
     def remove_item(self, item):
         if item in self.items:
             self.items.remove(item)

@@ -1,7 +1,30 @@
 {
-    "name": "vdrv",
+    "name": "pizda",
     "level": 1,
-    "gold": 51,
+    "gold": 12,
     "hp": 120,
-    "stage": 1
+    "stage": 1,
+    "equipped_weapon": "Dagger",
+    "inventory": [
+        {
+            "type": "Dagger",
+            "level": 1
+        },
+        {
+            "type": "HealingPotion",
+            "level": 1
+        },
+        {
+            "type": "Dagger",
+            "level": 1
+        },
+        {
+            "type": "Mace",
+            "level": 1
+        },
+        {
+            "type": "Gun",
+            "level": 1
+        }
+    ]
 }
