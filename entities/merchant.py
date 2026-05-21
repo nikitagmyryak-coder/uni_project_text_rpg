@@ -24,7 +24,6 @@ class Merchant:
         print("\n" + "-" * 20 + " MERCHANT SHOP " + "-" * 20)
         print(f"Welcome, traveler! Here is what I have for Stage {self.stage}:")
 
-        # Requirement: Lambda Expression Sorting
         sorted_goods = sorted(self.goods, key=lambda item: item.price)
 
         for index, item in enumerate(sorted_goods, 1):

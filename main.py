@@ -7,6 +7,7 @@ from logic.inventory import *
 from utils.exceptions import *
 from items.weapons import *
 from items.potions import *
+from entities.merchant import *
 
 petc = "\nPress Enter to continue..."
 
@@ -106,7 +107,7 @@ def game_loop(player, stage):
             elif move == "2":
                 check_inventory_menu(player)
             elif move == "3":
-                print("\n[Merchant coming soon...]")
+                visit_merchant_menu(player, stage)
                 input(petc)
             elif move == "4":
                 save_game(player, stage)
@@ -116,7 +117,6 @@ def game_loop(player, stage):
                 print("\n\033[31mInvalid option. Please choose 1-4.\033[0m")
                 input(petc)
 
-        # Переходим на следующий этап
         stage += 1
 
 
@@ -167,6 +167,49 @@ def save_game(player: Player, stage: int):
     print("\n\033[32m --- Game saved successfully! ---\033[0m")
     input(petc)
 
+
+def visit_merchant_menu(player, stage):
+    # Создаем объект торговца для текущего этапа (каждый раз товары будут генерироваться случайно)
+    merchant = Merchant(stage)
+
+    while True:
+        clear_screen()
+        print(f"Your Gold: {player.gold}")
+
+
+        sorted_goods = merchant.show_goods()
+
+        if not sorted_goods:
+            print("The merchant has run out of items!")
+            input(petc)
+            break
+
+        print("--- OPTIONS ---")
+        print("1. Buy item")
+        print("2. Back to camp")
+
+        choice = input("\nYour choice: ")
+
+        if choice == "1":
+            try:
+                i = int(input("Enter item number to buy: ")) - 1
+                if 0 <= i < len(sorted_goods):
+                    clear_screen()
+
+                    merchant.buy_item(player, i, sorted_goods)
+                    input(petc)
+                else:
+                    print("\nInvalid item number.")
+                    input(petc)
+            except ValueError:
+                print("\nPlease enter a valid number.")
+                input(petc)
+            except (NotEnoughMoney, NotEnoughSpace) as game_error:
+                print(f"\n{game_error}")
+                input(petc)
+
+        elif choice == "2":
+            break
 
 def main_menu():
     while True:
