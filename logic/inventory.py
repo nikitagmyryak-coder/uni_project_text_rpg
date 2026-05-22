@@ -1,3 +1,4 @@
+from items import potions, weapons
 from utils.exceptions import *
 
 class Inventory():
@@ -23,13 +24,27 @@ class Inventory():
         gold_info = f"Gold: {player.gold}\n" if player else ""
         if not self.items:
             return "Your inventory is empty."
+        potions_list = [item for item in self.items if hasattr(item, 'heal')]
+        weapons_list = [item for item in self.items if hasattr(item, 'damage')]
+
         print(gold_info)
         status = f"--- INVENTORY ({len(self.items)}/{self.capacity}) ---\n"
-        for i, item in enumerate(self.items, 1):
-            is_equipped = ""
-            if player and hasattr(player, 'equipped_weapon') and item == player.equipped_weapon:
-                is_equipped = " (Equipped)"
+        item_number = 1
 
+        if potions_list:
+            status += "--- Consumables: ---\n"
+            for item in potions:
+                status += f"{item_number}. {item.name}\n"
+                item_number += 1
 
-            status += f"{i}. {item.name}{is_equipped}\n"
+        if weapons:
+            status += "--- Gear: ---\n"
+            for item in weapons_list:
+                status += f"{item_number}. {item.name}\n"
+                item_number += 1
+                if player and hasattr(player, 'equipped_weapon') and item == player.equipped_weapon:
+                    is_equipped = " (Equipped)"
+
+                status += f"{item_number}. {item.name}{is_equipped}\n"
+                item_number += 1
         return status

@@ -24,6 +24,7 @@ class Merchant:
 
         sorted_goods = sorted(self.goods, key=lambda item: item.price)
 
+        # enumerate(..., 1) numbers the items starting at 1 instead of 0
         for index, item in enumerate(sorted_goods, 1):
             stat_info = f"Damage: {item.damage}" if item.damage > 0 else f"Heal: {item.heal}"
             print(f"{index}. {item.name} | {stat_info} | Price: {item.price} gold")
