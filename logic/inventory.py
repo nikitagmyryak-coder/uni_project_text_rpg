@@ -1,6 +1,7 @@
 from items import potions, weapons
 from utils.exceptions import *
 
+
 class Inventory():
     def __init__(self, capacity):
         self.capacity = capacity
@@ -12,7 +13,6 @@ class Inventory():
         else:
             raise NotEnoughSpace("Not enough space, the item was not added. Clean some space")
 
-
     def clear_items(self):
         self.items = []
 
@@ -23,21 +23,22 @@ class Inventory():
     def get_inventory_status(self, player=None):
         if not self.items:
             return "Your inventory is empty."
+
         potions_list = [item for item in self.items if getattr(item, 'heal', 0) > 0]
         weapons_list = [item for item in self.items if getattr(item, 'damage', 0) > 0]
 
-
-        status =  f"Gold: {player.gold}\n" if player else ""
+        status = f"Gold: {player.gold}\n" if player else ""
         status += f"--- INVENTORY ({len(self.items)}/{self.capacity}) ---\n"
-        item_number = 1
 
         if potions_list:
+            item_number = 1
             status += "--- Consumables: ---\n"
             for item in potions_list:
                 status += f"{item_number}. {item.name}\n"
                 item_number += 1
 
         if weapons_list:
+            item_number = 1
             status += "--- Gear: ---\n"
             for item in weapons_list:
                 is_equipped = ""
@@ -45,4 +46,5 @@ class Inventory():
                     is_equipped = " (Equipped)"
                 status += f"{item_number}. {item.name}{is_equipped}\n"
                 item_number += 1
+
         return status

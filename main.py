@@ -50,11 +50,22 @@ def check_inventory_menu(player):
                 input(petc)
                 continue
             try:
+                potions_list = [item for item in player.inventory.items if getattr(item, 'heal', 0) > 0]
+                weapons_list = [item for item in player.inventory.items if getattr(item, 'damage', 0) > 0]
+                displayed_items = potions_list + weapons_list
+
                 i = int(input("Enter item number: ")) - 1
                 if 0 <= i < len(player.inventory.items):
-                    item = player.inventory.items[i]
+                    item = displayed_items[i]
                     clear_screen()
                     player.inspect(item)
+
+                    if getattr(item, 'heal', 0) > 0:
+                        choice_heal = input("\nUse?[y/n]")
+                        if choice_heal.lower() == "n":
+                            break
+                        elif choice_heal == "y" or "Y":
+                            player.use_item(item)
                     input(petc)
                 else:
                     print("\nInvalid item number.")
@@ -137,7 +148,7 @@ def load_game():
         player._hp = data["hp"]
         stage = data["stage"]
 
-        player.inventory.items = []
+        player.inventory.clear_items()
         player.equipped_weapon = None
 
         eq_name = data.get("equipped_weapon")

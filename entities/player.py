@@ -31,6 +31,22 @@ class Player(Entity):
             self._damage = 999
             self.gold = 9999
 
+    def use_item(self, item):
+        if item in self.inventory.items:
+            if item.heal > 0:
+                self.heal(item.heal)
+                self.inventory.remove_item(item)
+                print(f"You have used {item.name}.")
+
+            elif getattr(item, 'damage', 0) > 0:
+                print(f"You cannot use {item.name} as a potion! It's a weapon. Use 'Equip' option instead.")
+
+            else:
+                print(f"The item {item.name} cannot be used right now.")
+
+        else:
+            print(f"You don't have {item.name} in your inventory.")
+
     def inspect(self, item):
         level_info = f" [Lvl: {item.level}]" if hasattr(item, 'level') else ""
         print(f"--- {item.name}{level_info} ---")
@@ -58,6 +74,7 @@ class Player(Entity):
         else:
             print(f"You don't have {item.name} in your inventory.")
 
+
     @log_action
     def equip(self):
         # create a list with only weapons to iterate later on:
@@ -67,8 +84,6 @@ class Player(Entity):
             self.equipped_weapon = best_weapon
         else:
             print("You don't have any weapons.")
-
-
     @log_action
     @stat_change_alert
     def level_up(self):
@@ -81,6 +96,7 @@ class Player(Entity):
 
 
 def auto_save_log(func):
+
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         player = args[0]
@@ -89,22 +105,5 @@ def auto_save_log(func):
 
         return result
 
+
     return wrapper
-
-
-    # todo: do something with this
-    # def use_item(self, item):
-    #     if item in self.inventory.items:
-    #         if item.heal > 0:
-    #             self.heal(item.heal)
-    #             self.inventory.remove_item(item)
-    #             print(f"You have used {item.name}.")
-    #
-    #         elif getattr(item, 'damage', 0) > 0:
-    #             print(f"You cannot use {item.name} as a potion! It's a weapon. Use 'Equip' option instead.")
-    #
-    #         else:
-    #             print(f"The item {item.name} cannot be used right now.")
-    #
-    #     else:
-    #         print(f"You don't have {item.name} in your inventory.")
