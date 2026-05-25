@@ -50,9 +50,9 @@ def check_inventory_menu(player):
                 input(petc)
                 continue
             try:
-                idx = int(input("Enter item number: ")) - 1
-                if 0 <= idx < len(player.inventory.items):
-                    item = player.inventory.items[idx]
+                i = int(input("Enter item number: ")) - 1
+                if 0 <= i < len(player.inventory.items):
+                    item = player.inventory.items[i]
                     clear_screen()
                     player.inspect(item)
                     input(petc)
@@ -137,7 +137,6 @@ def load_game():
         player._hp = data["hp"]
         stage = data["stage"]
 
-        # clear current unrelevant inventory
         player.inventory.items = []
         player.equipped_weapon = None
 

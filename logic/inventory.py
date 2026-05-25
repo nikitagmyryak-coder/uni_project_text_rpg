@@ -21,30 +21,28 @@ class Inventory():
             self.items.remove(item)
 
     def get_inventory_status(self, player=None):
-        gold_info = f"Gold: {player.gold}\n" if player else ""
         if not self.items:
             return "Your inventory is empty."
-        potions_list = [item for item in self.items if hasattr(item, 'heal')]
-        weapons_list = [item for item in self.items if hasattr(item, 'damage')]
+        potions_list = [item for item in self.items if getattr(item, 'heal', 0) > 0]
+        weapons_list = [item for item in self.items if getattr(item, 'damage', 0) > 0]
 
-        print(gold_info)
-        status = f"--- INVENTORY ({len(self.items)}/{self.capacity}) ---\n"
+
+        status =  f"Gold: {player.gold}\n" if player else ""
+        status += f"--- INVENTORY ({len(self.items)}/{self.capacity}) ---\n"
         item_number = 1
 
         if potions_list:
             status += "--- Consumables: ---\n"
-            for item in potions:
+            for item in potions_list:
                 status += f"{item_number}. {item.name}\n"
                 item_number += 1
 
-        if weapons:
+        if weapons_list:
             status += "--- Gear: ---\n"
             for item in weapons_list:
-                status += f"{item_number}. {item.name}\n"
-                item_number += 1
+                is_equipped = ""
                 if player and hasattr(player, 'equipped_weapon') and item == player.equipped_weapon:
                     is_equipped = " (Equipped)"
-
                 status += f"{item_number}. {item.name}{is_equipped}\n"
                 item_number += 1
         return status
