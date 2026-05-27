@@ -27,7 +27,9 @@ class Inventory():
         potions_list = [item for item in self.items if getattr(item, 'heal', 0) > 0]
         weapons_list = [item for item in self.items if getattr(item, 'damage', 0) > 0]
 
-        status = f"Gold: {player.gold}\n" if player else ""
+        # get_hp() - current hp
+        # max_hp - max hp
+        status = f"Gold: {player.gold} \nHP: {player.get_hp()}/{player.max_hp}\n\n"
         status += f"--- INVENTORY ({len(self.items)}/{self.capacity}) ---\n"
 
         if potions_list:

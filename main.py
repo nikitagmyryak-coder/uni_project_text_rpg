@@ -61,7 +61,7 @@ def check_inventory_menu(player):
                     player.inspect(item)
 
                     if getattr(item, 'heal', 0) > 0:
-                        choice_heal = input("\nUse?[y/n]")
+                        choice_heal = input("\nUse?[y/n]: ")
                         if choice_heal.lower() == "n":
                             break
                         elif choice_heal == "y" or "Y":
@@ -85,15 +85,20 @@ def game_loop(player, stage):
         print(f"       --- STAGE {stage} / 5 ---")
         print(f"=================================")
 
-        # 1. Боевая фаза комнаты
-        spawn_enemies(stage)
-        input("\n[TEST] You have cleared the room")
 
-        # Проверка победы на финальном 5 уровне
+        spawn_enemies(stage)
+        for enemy in spawn_enemies(stage):
+            enemy.introduce()
+
+        if player.get_hp() <= 0:
+            clear_screen()
+            print(f"--- GAME OVER ---")
+            exit()
+
         if stage >= 5:
             clear_screen()
             print("=================================")
-            print(f"     --- VICTORY! GAME OVER ---")
+            print(f"{'--- VICTORY! GAME OVER ---':^33}")
             print("=================================")
             print(f"Congratulations! {player.name} has won the game!")
             input(petc)
@@ -222,7 +227,6 @@ def visit_merchant_menu(player, stage):
 
         if not sorted_goods:
             print("The merchant has run out of items!")
-            input(petc)
             break
 
         print("--- OPTIONS ---")
