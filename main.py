@@ -40,6 +40,13 @@ def character_creation():
 def check_inventory_menu(player):
     while True:
         clear_screen()
+
+        # Filter and unify only interactable items to prevent indexing bugs
+        potions_list = [item for item in player.inventory.items if getattr(item, 'heal', 0) > 0]
+        weapons_list = [item for item in player.inventory.items if getattr(item, 'damage', 0) > 0]
+        displayed_items = potions_list + weapons_list
+
+        # Print the current inventory capacity status
         print(player.inventory.get_inventory_status(player))
 
         print("--- OPTIONS ---")
@@ -49,17 +56,22 @@ def check_inventory_menu(player):
         choice = input("\nYour choice: ")
 
         if choice == "1":
-            if not player.inventory.items:
+            if not displayed_items:
                 print("\nNothing to inspect.")
                 input(petc)
                 continue
-            try:
-                potions_list = [item for item in player.inventory.items if getattr(item, 'heal', 0) > 0]
-                weapons_list = [item for item in player.inventory.items if getattr(item, 'damage', 0) > 0]
-                displayed_items = potions_list + weapons_list
 
-                i = int(input("Enter item number: ")) - 1
-                if 0 <= i < len(player.inventory.items):
+            # Print items with a matching index number
+            print("\n--- USABLE ITEMS ---")
+            for index, item in enumerate(displayed_items, 1):
+                type_info = "Potion" if getattr(item, 'heal', 0) > 0 else "Weapon"
+                print(f"{index}. {item.name} ({type_info})")
+
+            try:
+                i = int(input("\nEnter item number to inspect: ")) - 1
+
+                # Validation is strictly bound to the displayed list size
+                if 0 <= i < len(displayed_items):
                     item = displayed_items[i]
                     clear_screen()
                     player.inspect(item)

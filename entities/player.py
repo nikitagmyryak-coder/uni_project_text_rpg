@@ -53,6 +53,11 @@ class Player(Entity):
         print(f"Description: {item.description}")
         if getattr(item, 'damage', 0) > 0:
             print(f"Damage: {item.damage}")
+            choice = input(f"Equip: {item.name}? [y/n]")
+            if choice.lower() == "y":
+                self.equipped_weapon = item
+                print(f"{self.name} equipped {item.name}.")
+
         if getattr(item, 'heal', 0) > 0:
             print(f"Heal: {item.heal}")
 
