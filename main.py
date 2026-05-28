@@ -1,5 +1,6 @@
 import os
 import json
+import random
 from entities.player import Player
 from entities.merchant import Merchant
 from logic import inventory
@@ -11,6 +12,9 @@ from items.potions import *
 from entities.merchant import *
 
 petc = "\nPress Enter to continue..."
+
+# ugly but it was attempt to make the code DRY
+go = f"--- GAME OVER ---"
 
 
 def clear_screen():
@@ -62,9 +66,7 @@ def check_inventory_menu(player):
 
                     if getattr(item, 'heal', 0) > 0:
                         choice_heal = input("\nUse?[y/n]: ")
-                        if choice_heal.lower() == "n":
-                            break
-                        elif choice_heal == "y" or "Y":
+                        if choice_heal.lower() == "y":
                             player.use_item(item)
                     input(petc)
                 else:
@@ -79,21 +81,26 @@ def check_inventory_menu(player):
 
 
 def game_loop(player, stage):
-    while True:
+    # Control the stage progression up to the maximum level
+    while stage <= 5:
         clear_screen()
         print(f"\n=================================")
         print(f"       --- STAGE {stage} / 5 ---")
         print(f"=================================")
+        input("\nPress Enter to face the enemies...")
 
-
-        spawn_enemies(stage)
+        # The generator yields enemies one by one
         for enemy in spawn_enemies(stage):
-            enemy.introduce()
+            survived = battle_menu(player, enemy)
 
-        if player.get_hp() <= 0:
-            clear_screen()
-            print(f"--- GAME OVER ---")
-            exit()
+            if not survived:
+                clear_screen()
+                print(go)
+                exit()
+
+            print(f"\nEnemy {enemy.name} defeated!")
+            player.gold += random.randint(25, 75)
+            input(petc)
 
         if stage >= 5:
             clear_screen()
@@ -104,11 +111,12 @@ def game_loop(player, stage):
             input(petc)
             break
 
+        # Camp sub-loop for preparation before moving to the next stage
         next_stage_ready = False
         while not next_stage_ready:
             clear_screen()
             print(f"--- CAMP (Prepared for Stage {stage + 1}) ---")
-            print(f"Player: {player.name} | Gold: {player.gold}")
+            print(f"Player: {player.name} | Gold: {player.gold} | HP: {player.get_hp()}")
             print("\nChoices:")
             print("1. Next stage")
             print("2. Check inventory")
@@ -130,10 +138,60 @@ def game_loop(player, stage):
             elif move == "5":
                 exit()
             else:
-                print("\n\033[31mInvalid option. Please choose 1-4.\033[0m")
+                print("\n\033[31mInvalid option. Please choose 1-5.\033[0m")
                 input(petc)
 
         stage += 1
+
+
+def battle_menu(player, enemy):
+    clear_screen()
+    print("=================================")
+    print(f"   BATTLE: vs {enemy.name}!!   ")
+    print("=================================\n")
+
+    enemy.introduce()
+    input(petc)
+
+    while player.get_hp() > 0 and enemy.get_hp() > 0:
+        clear_screen()
+
+        print(f"--- {enemy.name} (HP: {enemy.get_hp()}) ---")
+        print(f"--- {player.name} (HP: {player.get_hp()}) ---\n")
+        print("1. Attack")
+        print("2. Check inventory")
+
+        choice = input("\nYour choice: ")
+
+        if choice == "1":
+            dmg = player.get_total_damage()
+            enemy.take_damage(dmg)
+            print(f"\nYou hit {enemy.name} for {dmg} damage!")
+
+            if enemy.get_hp() <= 0:
+                print(f"You defeated {enemy.name}!")
+                gold_drop = enemy.get_level() * 15
+                player.gold += gold_drop
+                print(f"You found {gold_drop} gold.")
+                input(petc)
+                clear_screen()
+                return True
+        elif choice == "2":
+            check_inventory_menu(player)
+            continue
+
+        else:
+            print("\nInvalid choice! You stumbled and missed your turn.")
+
+        # Enemy counter-attacks if still alive
+        if enemy.get_hp() > 0:
+            enemy_dmg = enemy.get_damage()
+            player.take_damage(enemy_dmg)
+            print(f"{enemy.name} attacked you for {enemy_dmg} damage!")
+            input(petc)
+
+    # Returns True if the player survived the battle
+    return player.get_hp() > 0
 
 
 def load_game():
@@ -142,7 +200,6 @@ def load_game():
 
     if not os.path.exists(save_path):
         raise InvalidChoice("No save file found! Please start a new game.")
-
 
     try:
         with open(save_path, "r", encoding="utf-8") as f:
@@ -156,13 +213,6 @@ def load_game():
         player.inventory.clear_items()
         player.equipped_weapon = None
 
-        eq_name = data.get("equipped_weapon")
-        if eq_name:
-            for item in player.inventory.items:
-                if item.__class__.__name__ == eq_name:
-                    player.equipped_weapon = item
-                    break
-
         for item_data in data.get("inventory", []):
             class_name = item_data["type"]
             item_level = item_data["level"]
@@ -171,6 +221,13 @@ def load_game():
                 item_class = globals()[class_name]
                 new_item = item_class(item_level)
                 player.inventory.add_item(new_item)
+
+        eq_name = data.get("equipped_weapon")
+        if eq_name:
+            for item in player.inventory.items:
+                if item.__class__.__name__ == eq_name:
+                    player.equipped_weapon = item
+                    break
 
         print("\n\033[32m --- Game loaded successfully! ---\033[0m")
         input(petc)
@@ -222,7 +279,6 @@ def visit_merchant_menu(player, stage):
         clear_screen()
         print(f"Your Gold: {player.gold}")
 
-
         sorted_goods = merchant.show_goods()
 
         if not sorted_goods:
@@ -240,7 +296,6 @@ def visit_merchant_menu(player, stage):
                 i = int(input("Enter item number to buy: ")) - 1
                 if 0 <= i < len(sorted_goods):
                     clear_screen()
-
                     merchant.buy_item(player, i, sorted_goods)
                     input(petc)
                 else:

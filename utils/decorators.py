@@ -1,8 +1,9 @@
 from entities import player
+import functools
 
 def log_action(func):
+    @functools.wraps(func) # saves original func name
     def wrapper(*args, **kwargs):
-        # args[0] — это объект Player, так как декоратор применяется к его методам
         player = args[0]
 
         action_name = func.__name__.replace('_', ' ').upper()
@@ -13,16 +14,17 @@ def log_action(func):
 
         result = func(*args, **kwargs)
 
-        print("." * 45 + "\n")
+        print("\n")
         return result
 
     return wrapper
 
 
 def stat_change_alert(func):
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
-        print("--- STATUS UPDATE SUCCESSFUL ---")
+        print("\n--- STATUS UPDATE SUCCESSFUL ---")
         return result
 
     return wrapper

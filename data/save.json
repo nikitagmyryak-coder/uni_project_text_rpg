@@ -1,29 +1,13 @@
 {
     "name": "anon",
     "level": 1,
-    "gold": 9916,
-    "hp": 1,
+    "gold": 9999,
+    "hp": 9999,
     "stage": 1,
     "equipped_weapon": "Dagger",
     "inventory": [
         {
             "type": "Dagger",
-            "level": 1
-        },
-        {
-            "type": "HealingPotion",
-            "level": 1
-        },
-        {
-            "type": "Sword",
-            "level": 1
-        },
-        {
-            "type": "Mace",
-            "level": 1
-        },
-        {
-            "type": "Gun",
             "level": 1
         }
     ]
