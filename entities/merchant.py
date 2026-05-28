@@ -1,6 +1,6 @@
 import random
 from items.weapons import Axe, Dagger, Sword, Mace, Bayonet, Gun
-from items.potions import HealingPotion
+from items.potions import HealingPotion, LevelUpPotion
 from utils.exceptions import NotEnoughMoney
 
 
@@ -11,7 +11,7 @@ class Merchant:
         all_possible_items = [
             Axe(stage), Dagger(stage), Sword(stage),
             Mace(stage), Bayonet(stage), Gun(stage),
-            HealingPotion(1), HealingPotion(2)
+            HealingPotion(1), HealingPotion(2), LevelUpPotion
         ]
 
         self.goods = [item for item in all_possible_items if item.level <= stage]
