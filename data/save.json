@@ -1,17 +1,13 @@
 {
-    "name": "nikita",
+    "name": "anon",
     "level": 1,
-    "gold": 402,
-    "hp": 110,
+    "gold": 9999,
+    "hp": 9999,
     "stage": 1,
-    "equipped_weapon": "Axe",
+    "equipped_weapon": "Dagger",
     "inventory": [
         {
             "type": "Dagger",
-            "level": 1
-        },
-        {
-            "type": "Axe",
             "level": 1
         }
     ]

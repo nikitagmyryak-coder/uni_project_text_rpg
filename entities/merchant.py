@@ -45,6 +45,13 @@ class Merchant:
         if player.gold < chosen_item.price:
             raise NotEnoughMoney(f"You don't have enough gold! You need {chosen_item.price} to buy {chosen_item.name}")
 
+        if isinstance(chosen_item, LevelUpPotion):
+            player.gold -= chosen_item.price
+            self.goods.remove(chosen_item)
+            player.level_up()  # Повышаем уровень на месте
+            print(f"Successfully bought and used {chosen_item.name}!")
+            return
+
         try:
             # Inventory capacity check via add_item()
             player.inventory.add_item(chosen_item)
