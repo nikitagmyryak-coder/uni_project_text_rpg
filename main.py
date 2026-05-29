@@ -62,6 +62,7 @@ def check_inventory_menu(player):
                 continue
 
             # Print items with a matching index number
+            clear_screen()
             print("\n--- USABLE ITEMS ---")
             for index, item in enumerate(displayed_items, 1):
                 type_info = "Potion" if getattr(item, 'heal', 0) > 0 else "Weapon"
@@ -175,10 +176,14 @@ def battle_menu(player, enemy):
 
         choice = input("\nYour choice: ")
 
+        # Track if the player used up their turn
+        turn_spent = False
+
         if choice == "1":
             dmg = player.get_total_damage()
             enemy.take_damage(dmg)
             print(f"\nYou hit {enemy.name} for {dmg} damage!")
+            turn_spent = True
 
             if enemy.get_hp() <= 0:
                 print(f"You defeated {enemy.name}!")
@@ -188,15 +193,18 @@ def battle_menu(player, enemy):
                 input(petc)
                 clear_screen()
                 return True
+
         elif choice == "2":
             check_inventory_menu(player)
+            # turn_spent remains False, so the enemy won't attack
             continue
 
         else:
             print("\nInvalid choice! You stumbled and missed your turn.")
+            turn_spent = True
 
-        # Enemy counter-attacks if still alive
-        if enemy.get_hp() > 0:
+        # Enemy counter-attacks only if the player spent their turn and enemy is alive
+        if turn_spent and enemy.get_hp() > 0:
             enemy_dmg = enemy.get_damage()
             player.take_damage(enemy_dmg)
             print(f"{enemy.name} attacked you for {enemy_dmg} damage!")
@@ -204,7 +212,6 @@ def battle_menu(player, enemy):
 
     # Returns True if the player survived the battle
     return player.get_hp() > 0
-
 
 def load_game():
     clear_screen()

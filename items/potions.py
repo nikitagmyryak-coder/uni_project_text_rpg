@@ -20,5 +20,6 @@ class HealingPotion(Item):
 
 
 class LevelUpPotion(Item):
-    def __init__(self):
+    def __init__(self, level):
+        self.level = level
         super().__init__(f"Level Up Potion", 0, 0, 50, f"Levels you up")

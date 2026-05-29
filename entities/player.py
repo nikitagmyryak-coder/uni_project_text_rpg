@@ -1,7 +1,7 @@
 import random
 import re
 from entities.base_entity import Entity
-from items.weapons import Dagger
+from items.weapons import *
 from utils.exceptions import *
 from logic.inventory import Inventory
 from utils.decorators import log_action, stat_change_alert
@@ -38,14 +38,6 @@ class Player(Entity):
                 self.inventory.remove_item(item)
                 print(f"You have used {item.name}.")
 
-            elif getattr(item, 'damage', 0) > 0:
-                print(f"You cannot use {item.name} as a potion! It's a weapon. Use 'Equip' option instead.")
-
-            else:
-                print(f"The item {item.name} cannot be used right now.")
-
-        else:
-            print(f"You don't have {item.name} in your inventory.")
 
     def inspect(self, item):
         level_info = f" [Lvl: {item.level}]" if hasattr(item, 'level') else ""
@@ -53,7 +45,7 @@ class Player(Entity):
         print(f"Description: {item.description}")
         if getattr(item, 'damage', 0) > 0:
             print(f"Damage: {item.damage}")
-            choice = input(f"Equip: {item.name}? [y/n]")
+            choice = input(f"Equip: {item.name}? [y/n]: ")
             if choice.lower() == "y":
                 self.equipped_weapon = item
                 print(f"{self.name} equipped {item.name}.")
@@ -80,15 +72,15 @@ class Player(Entity):
             print(f"You don't have {item.name} in your inventory.")
 
 
-    @log_action
-    def equip(self):
-        # create a list with only weapons to iterate later on:
-        weapons = [item for item in self.inventory.items if getattr(item, 'damage', 0) > 0]
-        if weapons:
-            best_weapon = max(weapons, key=lambda w: w.damage)
-            self.equipped_weapon = best_weapon
-        else:
-            print("You don't have any weapons.")
+    # @log_action
+    # def equip(self):
+    #     # create a list with only weapons to iterate later on:
+    #     weapons = [item for item in self.inventory.items if getattr(item, 'damage', 0) > 0]
+    #     if weapons:
+    #         best_weapon = max(weapons, key=lambda w: w.damage)
+    #         self.equipped_weapon = best_weapon
+    #     else:
+    #         print("You don't have any weapons.")
     @log_action
     @stat_change_alert
     def level_up(self):

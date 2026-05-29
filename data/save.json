@@ -1,13 +1,17 @@
 {
-    "name": "dwadawd",
+    "name": "nikita",
     "level": 1,
-    "gold": 98,
-    "hp": 120,
+    "gold": 402,
+    "hp": 110,
     "stage": 1,
-    "equipped_weapon": "Dagger",
+    "equipped_weapon": "Axe",
     "inventory": [
         {
             "type": "Dagger",
+            "level": 1
+        },
+        {
+            "type": "Axe",
             "level": 1
         }
     ]

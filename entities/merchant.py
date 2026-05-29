@@ -11,12 +11,13 @@ class Merchant:
         all_possible_items = [
             Axe(stage), Dagger(stage), Sword(stage),
             Mace(stage), Bayonet(stage), Gun(stage),
-            HealingPotion(1), HealingPotion(2), LevelUpPotion
+            HealingPotion(1), HealingPotion(2), LevelUpPotion(stage)
         ]
 
         self.goods = [item for item in all_possible_items if item.level <= stage]
 
         self.goods = random.sample(self.goods, k=min(4, len(self.goods)))
+        self.goods.append(HealingPotion(stage))
 
     def show_goods(self):
         print("\n--- MERCHANT SHOP ---")
@@ -26,7 +27,8 @@ class Merchant:
 
         # enumerate(..., 1) numbers the items starting at 1 instead of 0
         for index, item in enumerate(sorted_goods, 1):
-            stat_info = f"Damage: {item.damage}" if item.damage > 0 else f"Heal: {item.heal}"
+            # Безопасно проверяем наличие урона, если его нет — выводим лечение
+            stat_info = f"Damage: {item.damage}" if getattr(item, 'damage', 0) > 0 else f"Heal: {item.heal}"
             print(f"{index}. {item.name} | {stat_info} | Price: {item.price} gold")
             print(f"   Desc: {item.description}")
         print("=" * 55)
